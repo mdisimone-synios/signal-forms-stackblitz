@@ -1,0 +1,4 @@
+@if (inputForm().touched() && inputForm().invalid()) { @for (error of
+inputForm().errors(); track error) {
+<div class="text-danger">{{ error.message }}</div>
+} }
