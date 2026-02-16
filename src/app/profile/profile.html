@@ -1,0 +1,91 @@
+<div class="grid">
+    <div class="g-col-12 form-group">
+      <div class="g-col-9 form-group">
+        <label for="title" class="form-label">Title</label>
+        <select id="title" class="form-select" [formField]="profileForm().title">
+          <option disabled [value]="">Select your Title</option>
+          @for (title of titles; track title.value) {
+            <option [value]="title.value">
+              {{ title.label }}
+            </option>
+          }
+        </select>
+        <app-error-message [inputForm]="profileForm().title()"></app-error-message>
+      </div>
+    </div>
+    
+    <div class="g-col-12 form-group">
+      <label for="firstname" class="form-label">First name</label>
+      <input
+        id="firstname"
+        class="form-control"
+        formField]="profileForm().firstName"
+        placeholder="Enter first name"
+      />
+      <app-error-message [inputForm]="profileForm().firstName()"></app-error-message>
+    </div>
+    <div class="g-col-12 form-group">
+      <label for="lastname" class="form-label">Last name</label>
+      <input
+        id="lastname"
+        class="form-control"
+        formField]="profileForm().lastName"
+        placeholder="Enter last name"
+      />
+      <app-error-message [inputForm]="profileForm().lastName()"></app-error-message>
+    </div>
+
+    <div class="g-col-12 form-group">
+      <label for="email" class="form-label">Email</label>
+      <div class="input-group">
+        <span class="input-group-text bi bi-at" id="email-addon"></span>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          formField]="profileForm().email"
+          placeholder="Enter email address"
+        />
+        <app-error-message [inputForm]="profileForm().email()"></app-error-message>
+      </div>
+    </div>
+
+    <div class="g-col-12 form-group">
+      <label for="phone" class="form-label">Phone</label>
+      <div class="input-group">
+        <span class="input-group-text bi bi-telephone" id="phone-addon"></span>
+        <input
+          type="phone"
+          id="phone"
+          class="form-control"
+          formField]="profileForm().phone"
+          placeholder="Enter phone number"
+        />
+        <app-error-message [inputForm]="profileForm().phone()"></app-error-message>
+      </div>
+    </div>
+    <div class="g-col-12 form-group">
+      <label for="primary-contact">Primary contact:</label>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          formField]="profileForm().primaryContact"
+          value="email"
+          id="primary-contact-1"
+        />
+        <label class="form-check-label" for="primary-contact-1"> Email </label>
+      </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          formField]="profileForm().primaryContact"
+          value="phone"
+          id="primary-contact-2"
+        />
+        <label class="form-check-label" for="primary-contact-2"> Phone </label>
+      </div>
+    </div>
+   
+  </div>
