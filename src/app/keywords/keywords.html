@@ -1,0 +1,19 @@
+<div class="grid">
+  <div class="g-col-12 form-group">
+    <p class="form-label">Keywords</p>
+    @for (keyword of form(); track keyword.id().value(); let i = $index;) {
+    <div class="form-check form-check-inline">
+      <input
+        type="checkbox"
+        id="keyword-{{ i }}"
+        [formField]="keyword.checked"
+        class="form-check-input" />
+      <label
+        for="keyword-{{ i }}"
+        class="form-check-label"
+        >{{ keyword.label().value() }}
+      </label>
+    </div>
+    }
+  </div>
+</div>
