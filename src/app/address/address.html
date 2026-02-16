@@ -1,0 +1,63 @@
+<div class="grid gap-4">
+  <div class="g-col-12 form-group">
+    <label
+      for="street"
+      class="form-label"
+      >Address</label
+    >
+    <textarea
+      class="form-control"
+      id="address"
+      rows="3"
+      placeholder="Enter Address"
+      [formField]="form().address"></textarea>
+    <app-error-message [inputForm]="form().address()"></app-error-message>
+  </div>
+  <div class="g-col-3 form-group">
+    <label
+      for="zip"
+      class="form-label"
+      >ZIP</label
+    >
+    <input
+      id="zip"
+      class="form-control"
+      [formField]="form().zip"
+      placeholder="Enter postal code" />
+    <app-error-message [inputForm]="form().address()"></app-error-message>
+  </div>
+  <div class="g-col-9 form-group">
+    <label
+      for="city"
+      class="form-label"
+      >City</label
+    >
+    <input
+      id="city"
+      class="form-control"
+      [formField]="form().city"
+      placeholder="Enter your city" />
+    <app-error-message [inputForm]="form().address()"></app-error-message>
+  </div>
+  <div class="g-col-12 form-group">
+    <label
+      for="country"
+      class="form-label"
+      >Country</label
+    >
+    <select
+      id="country"
+      class="form-select"
+      [formField]="form().country">
+      <option
+        disabled
+        value="">
+        Select your country
+      </option>
+      @for (country of countries; track country) {
+      <option [value]="country.value">{{ country.label }}</option>
+      }
+    </select>
+    <app-error-message [inputForm]="form().country()"></app-error-message>
+  </div>
+</div>

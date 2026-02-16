@@ -26,11 +26,21 @@
           },
           "options": {
             "assets": [],
-            "index": "src/index.html",
             "browser": "src/main.ts",
+            "index": "src/index.html",
             "outputPath": "dist/demo",
             "polyfills": [],
             "scripts": ["bootstrap/dist/js/bootstrap.min.js"],
+            "stylePreprocessorOptions": {
+              "sass": {
+                "silenceDeprecations": [
+                  "mixed-decls",
+                  "color-functions",
+                  "global-builtin",
+                  "import"
+                ]
+              }
+            },
             "styles": ["src/global_styles.scss"],
             "tsConfig": "tsconfig.app.json"
           }

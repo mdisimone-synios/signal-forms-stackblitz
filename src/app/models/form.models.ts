@@ -1,5 +1,12 @@
 /* Add application styles & imports to this file! */
 
+export type MultiFormData = {
+  label: string;
+  value: string;
+};
+
+export type MultiCheckboxData = { id: string; label: string; checked: boolean };
+
 export type IUserForm = {
   username: string;
   password: string;
@@ -22,7 +29,9 @@ export type IAddressForm = {
   country: string;
 };
 
-export type IKeywordsForm = { [key: string]: boolean };
+export type IKeyword = { id: string; label: string; checked: boolean };
+
+export type IKeywordsForm = IKeyword[];
 
 export type ILinkForm = {
   url: string;
