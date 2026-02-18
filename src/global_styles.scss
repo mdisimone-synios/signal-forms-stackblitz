@@ -10,4 +10,5 @@ $min-contrast-ratio: 3;
 label:has(+ :required)::after,
 label:has(+ div > :required)::after {
   content: " *";
+  color: red;
 }
