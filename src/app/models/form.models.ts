@@ -42,6 +42,8 @@ export type IForm = {
   user: IUserForm;
   profile: IProfileForm;
   address: IAddressForm;
+  deviatingDeliveryAddress: boolean;
+  deliveryAddress: IAddressForm;
   keywords: IKeywordsForm;
   links: ILinkForm[];
   languages: string[];

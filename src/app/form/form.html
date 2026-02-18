@@ -1,6 +1,41 @@
-<div class="d-flex flex-column gap-4 m-3">
-  <app-user [form]="form.user"></app-user>
-  <app-profile [form]="form.profile"></app-profile>
-  <app-address [form]="form.address"></app-address>
-  <app-keywords [form]="form.keywords"></app-keywords>
+<div class="container">
+  <div class="d-flex flex-column gap-4 m-3">
+    <app-user [form]="form.user"></app-user>
+    <app-profile [form]="form.profile"></app-profile>
+    <app-address [form]="form.address"></app-address>
+    <app-links
+      [form]="form.links"
+      [model]="formModel"></app-links>
+    <div class="form-check form-check-inline">
+      <input
+        type="checkbox"
+        id="deviating-delivery-address"
+        [formField]="form.deviatingDeliveryAddress"
+        class="form-check-input" />
+      <label
+        for="deviating-delivery-address"
+        class="form-check-label"
+        >deviating delivery address
+      </label>
+    </div>
+    @if (!form.deliveryAddress().hidden()) {
+    <app-address [form]="form.deliveryAddress"></app-address>
+    }
+    <app-keywords [form]="form.keywords"></app-keywords>
+
+    <div class="d-flex justify-content-end gap-3">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="form().value.set(this.initializeCustomerModel())">
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="!form().touched() || form().invalid()">
+        Submit
+      </button>
+    </div>
+  </div>
 </div>

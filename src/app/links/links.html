@@ -1,0 +1,50 @@
+<div class="grid">
+  @for (link of form(); track link; let i = $index) {
+  <div class="g-col-12 form-group">
+    <div class="grid">
+      <div class="g-col-5 form-group">
+        <label
+          [for]="'url-' + i"
+          class="form-label"
+          >URL</label
+        >
+        <input
+          [id]="'url-' + i"
+          class="form-control"
+          [formField]="link.url"
+          placeholder="Enter URL" />
+        <app-error-message [inputForm]="form()[i].url()"></app-error-message>
+      </div>
+      <div class="g-col-5 form-group">
+        <label
+          [for]="'title-' + i"
+          class="form-label"
+          >Title</label
+        >
+        <input
+          [id]="'title-' + i"
+          class="form-control"
+          [formField]="link.title"
+          placeholder="Enter title" />
+        <app-error-message [inputForm]="form()[i].title()"></app-error-message>
+      </div>
+      <div class="g-col-2 d-flex align-items-end">
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="removeLink(i)">
+          Remove
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+  <div class="g-col-12 position-relative">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="addLink()">
+      Add Link
+    </button>
+  </div>
+</div>
