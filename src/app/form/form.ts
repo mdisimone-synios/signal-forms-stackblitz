@@ -1,52 +1,21 @@
 import { Component, effect, signal } from "@angular/core";
-import { form } from "@angular/forms/signals";
+import { form, FormField } from "@angular/forms/signals";
 import { Address } from "../address/address";
 import { Keywords } from "../keywords/keywords";
+import { Links } from "../links/links";
 import { IForm } from "../models/form.models";
 import { Profile } from "../profile/profile";
 import { formSchema } from "../schemas/form.schemas";
 import { User } from "../user/user";
 
-const formModel = {
-  user: {
-    username: "asdfsdf",
-    password: "",
-    passwordConfirm: "",
-  },
-  profile: {
-    title: "",
-    firstName: "Hans",
-    lastName: "Wurst",
-    email: "bla@blub.com",
-    phone: "12345",
-    primaryContact: "phone",
-  },
-  links: [],
-  address: {
-    address: "",
-    city: "",
-    zip: "",
-    country: "",
-  },
-  keywords: [
-    { label: "Frontend", id: "fe", checked: false },
-    { label: "Backend", id: "be", checked: false },
-    { label: "Fullstack", id: "fs", checked: false },
-    { label: "Database", id: "db", checked: false },
-    { label: "DevOps", id: "do", checked: false },
-    { label: "Hardware", id: "hw", checked: false },
-  ],
-  languages: [],
-};
-
 @Component({
   selector: "app-form",
-  imports: [User, Profile, Address, Keywords],
+  imports: [User, Profile, Address, Keywords, FormField, Links],
   templateUrl: "./form.html",
-  styleUrl: "./form.css",
+  styleUrl: "./form.scss",
 })
 export class Form {
-  formModel = signal<IForm>(formModel);
+  formModel = signal<IForm>(this.initializeCustomerModel());
 
   form = form(this.formModel, formSchema);
 
@@ -54,5 +23,46 @@ export class Form {
     effect(() => {
       console.log(this.form.keywords().value());
     });
+  }
+
+  initializeCustomerModel() {
+    return {
+      user: {
+        username: "",
+        password: "",
+        passwordConfirm: "",
+      },
+      profile: {
+        title: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        primaryContact: "",
+      },
+      links: [],
+      address: {
+        address: "",
+        city: "",
+        zip: "",
+        country: "",
+      },
+      deviatingDeliveryAddress: false,
+      deliveryAddress: {
+        address: "",
+        city: "",
+        zip: "",
+        country: "",
+      },
+      keywords: [
+        { label: "Frontend", id: "fe", checked: false },
+        { label: "Backend", id: "be", checked: false },
+        { label: "Fullstack", id: "fs", checked: false },
+        { label: "Database", id: "db", checked: false },
+        { label: "DevOps", id: "do", checked: false },
+        { label: "Hardware", id: "hw", checked: false },
+      ],
+      languages: [],
+    };
   }
 }

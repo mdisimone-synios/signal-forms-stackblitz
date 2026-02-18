@@ -1,19 +1,23 @@
 import {
   apply,
+  applyEach,
   applyWhen,
   email,
+  hidden,
   max,
   min,
   minLength,
   pattern,
   required,
   schema,
+  SchemaPathTree,
   validate,
 } from "@angular/forms/signals";
 import {
   IAddressForm,
   IForm,
   IKeywordsForm,
+  ILinkForm,
   IProfileForm,
   IUserForm,
 } from "../models/form.models";
@@ -87,6 +91,15 @@ export const profileSchema = schema<IProfileForm>((profileForm) => {
 });
 
 export const addressSchema = schema<IAddressForm>((userPath) => {
+  required(userPath.address, {
+    message: "Address is required",
+  });
+  required(userPath.zip, {
+    message: "ZIP is required",
+  });
+  required(userPath.city, {
+    message: "City is required",
+  });
   required(userPath.country, {
     message: "Country is required",
   });
@@ -94,11 +107,41 @@ export const addressSchema = schema<IAddressForm>((userPath) => {
   max(userPath.zip, 99999);
 });
 
+function url(field: SchemaPathTree<string>, options?: { message?: string }) {
+  validate(field, (ctx) => {
+    try {
+      new URL(ctx.value());
+      return null;
+    } catch {
+      return {
+        kind: "url",
+        message: options?.message || "Please enter a valid URL",
+      };
+    }
+  });
+}
+
 export const keywordsSchema = schema<IKeywordsForm>((keywordsPath) => {});
+
+export const linksSchema = schema<ILinkForm>((rootPath) => {
+  required(rootPath.title, { message: "If added, the link title is required" });
+  required(rootPath.url, { message: "If added, the link is required" });
+  url(rootPath.url, { message: "The link must be a valid URL" });
+});
 
 export const formSchema = schema<IForm>((rootPath) => {
   apply(rootPath.user, userSchema);
   apply(rootPath.profile, profileSchema);
   apply(rootPath.address, addressSchema);
   apply(rootPath.keywords, keywordsSchema);
+  applyEach(rootPath.links, linksSchema);
+  hidden(
+    rootPath.deliveryAddress,
+    (logic) => !logic.valueOf(rootPath.deviatingDeliveryAddress),
+  );
+  applyWhen(
+    rootPath.deliveryAddress,
+    (logic) => logic.valueOf(rootPath.deviatingDeliveryAddress),
+    addressSchema,
+  );
 });
