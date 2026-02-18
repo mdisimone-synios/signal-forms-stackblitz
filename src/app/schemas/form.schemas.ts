@@ -63,6 +63,23 @@ export const userSchema = schema<IUserForm>((userPath) => {
   required(userPath.username, {
     message: "Username is required",
   });
+  // WE DO NOT HAVE A BACKEND YET
+  // validateHttp(userPath.username, {
+  //   request: ({ value }) => `/api/check-username?username=${value()}`,
+  //   onSuccess: (response: any) => {
+  //     if (response.taken) {
+  //       return {
+  //         kind: "usernameTaken",
+  //         message: "Username is already taken",
+  //       };
+  //     }
+  //     return null;
+  //   },
+  //   onError: (error) => ({
+  //     kind: "networkError",
+  //     message: "Could not verify username availability",
+  //   }),
+  // });
   apply(userPath, passwordSchema);
 });
 
