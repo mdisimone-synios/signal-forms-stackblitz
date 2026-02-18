@@ -1,12 +1,12 @@
 # Angular Signal Forms
 
-A practical reference for `@angular/forms/signals` based on this project's implementation.
+Eine praxisnahe Referenz zu `@angular/forms/signals` basierend auf der Implementierung dieses Projekts.
 
-[Edit in StackBlitz next generation editor](https://stackblitz.com/~/github.com/MarcelloDiSimone/signal-forms-stackblitz)
+[Im StackBlitz Editor bearbeiten](https://stackblitz.com/~/github.com/MarcelloDiSimone/signal-forms-stackblitz)
 
-## Form Setup
+## Formular-Setup
 
-Define a typed model, provide default values via a signal, and attach a schema for validation.
+Typisiertes Model definieren, Standardwerte per Signal bereitstellen und ein Schema zur Validierung anheften.
 
 ```typescript
 // models/form.models.ts
@@ -46,9 +46,9 @@ export const formSchema = schema<IForm>((rootPath) => {
 <app-address [form]="form.address"></app-address>
 ```
 
-## Child Components via Signal Inputs
+## Kind-Komponenten per Signal Inputs
 
-Pass subtrees of the form to child components using `FieldTree` as a signal input. No `FormGroup` passing, no providers — just inputs.
+Teilbereiche des Formulars werden per `FieldTree` als Signal Input an Kind-Komponenten weitergegeben. Kein `FormGroup`-Durchreichen, keine Provider — einfach Inputs.
 
 ```typescript
 // user.ts
@@ -63,9 +63,9 @@ export class User {
 <app-error-message [inputForm]="form().username()" />
 ```
 
-## Dynamic Form Content (Arrays)
+## Dynamische Formularinhalte (Arrays)
 
-For dynamic lists like links, pass both the `FieldTree` and the model signal. Add/remove items by updating the model — the form reacts automatically.
+Für dynamische Listen wie Links werden sowohl der `FieldTree` als auch das Model-Signal übergeben. Einträge hinzufügen/entfernen durch Update des Models — das Formular reagiert automatisch.
 
 ```typescript
 // links.ts
@@ -99,7 +99,7 @@ export class Links {
 <button (click)="addLink()">Add Link</button>
 ```
 
-Schemas for array items use `applyEach`:
+Schemas für Array-Einträge verwenden `applyEach`:
 
 ```typescript
 export const formSchema = schema<IForm>((rootPath) => {
@@ -107,18 +107,18 @@ export const formSchema = schema<IForm>((rootPath) => {
 });
 ```
 
-## Non-Nullable by Default
+## Standardmässig Non-Nullable
 
-Signal forms fields are non-nullable. Where you previously used `[ngValue]="null"` for select placeholders in Reactive Forms, use an empty string instead.
+Signal Forms Felder sind non-nullable. Wo früher bei Reactive Forms `[ngValue]="null"` für Select-Platzhalter verwendet wurde, kommt jetzt ein leerer String zum Einsatz.
 
 ```typescript
-// Default value
+// Standardwert
 profile: { title: "", /* ... */ }
 ```
 
 ```html
-<!-- Use value="" (static attribute) or [value]="''" (property binding) -->
-<!-- Do NOT use [value]="" — that's a binding to an empty expression, not an empty string -->
+<!-- value="" (statisches Attribut) oder [value]="''" (Property Binding) verwenden -->
+<!-- NICHT [value]="" verwenden — das ist ein Binding auf einen leeren Ausdruck, kein leerer String -->
 <select [formField]="form().title">
   <option disabled selected value="">Select your Title</option>
   @for (title of titles; track title.value) {
@@ -127,15 +127,15 @@ profile: { title: "", /* ... */ }
 </select>
 ```
 
-## Checkboxes
+## Checkboxen
 
-Checkboxes bind to `boolean` fields directly — no `valueChanges`, no casting. Define the model as boolean, bind with `[formField]`, done.
+Checkboxen binden direkt an `boolean`-Felder — kein `valueChanges`, kein Casting. Model als boolean definieren, mit `[formField]` binden, fertig.
 
 ```typescript
 export type IKeyword = { id: string; label: string; checked: boolean };
 export type IKeywordsForm = IKeyword[];
 
-// Default values
+// Standardwerte
 keywords: [
   { label: "Frontend", id: "fe", checked: false },
   { label: "Backend", id: "be", checked: false },
@@ -149,15 +149,15 @@ keywords: [
 }
 ```
 
-A standalone boolean checkbox works the same way:
+Eine einzelne boolesche Checkbox funktioniert genauso:
 
 ```html
 <input type="checkbox" [formField]="form.deviatingDeliveryAddress" />
 ```
 
-## Custom Validators
+## Eigene Validatoren
 
-Write custom validators as functions using `validate`. Access the current field value via `ctx.value()`.
+Eigene Validatoren werden als Funktionen mit `validate` geschrieben. Zugriff auf den aktuellen Feldwert über `ctx.value()`.
 
 ```typescript
 function url(field: SchemaPathTree<string>, options?: { message?: string }) {
@@ -175,7 +175,7 @@ function url(field: SchemaPathTree<string>, options?: { message?: string }) {
 }
 ```
 
-Use it in a schema like any built-in validator:
+Einsatz im Schema wie jeder eingebaute Validator:
 
 ```typescript
 export const linksSchema = schema<ILinkForm>((rootPath) => {
@@ -184,27 +184,27 @@ export const linksSchema = schema<ILinkForm>((rootPath) => {
 });
 ```
 
-## Composed / Reusable Schemas
+## Zusammengesetzte / Wiederverwendbare Schemas
 
-Extract reusable validation logic into standalone schemas and compose them with `apply`.
+Wiederverwendbare Validierungslogik in eigenständige Schemas auslagern und mit `apply` zusammensetzen.
 
 ```typescript
 export const passwordSchema = schema<IUserForm>((userForm) => {
   required(userForm.password, { message: "Password is required" });
   minLength(userForm.password, 6, { message: "Password must be at least 6 characters long" });
   pattern(userForm.password, /[A-Z]/, { message: "Should contain uppercase letters" });
-  // ...more rules...
+  // ...weitere Regeln...
 });
 
 export const userSchema = schema<IUserForm>((userPath) => {
   required(userPath.username, { message: "Username is required" });
-  apply(userPath, passwordSchema); // compose the password rules
+  apply(userPath, passwordSchema); // Passwort-Regeln einbinden
 });
 ```
 
-## Cross-Field Validation with `value` and `valueOf`
+## Feld-übergreifende Validierung mit `value` und `valueOf`
 
-Inside `validate`, use `value()` for the current field and `valueOf()` to read other fields reactively.
+Innerhalb von `validate` wird `value()` für das aktuelle Feld und `valueOf()` zum reaktiven Lesen anderer Felder verwendet.
 
 ```typescript
 validate(userForm.password, (schemaPath) => {
@@ -218,9 +218,9 @@ validate(userForm.password, (schemaPath) => {
 });
 ```
 
-## Async Validators with `validateHttp`
+## Asynchrone Validatoren mit `validateHttp`
 
-Validate against a backend using `validateHttp`. Handles request, success, and error cases.
+Validierung gegen ein Backend mit `validateHttp`. Behandelt Request-, Erfolgs- und Fehlerfälle.
 
 ```typescript
 validateHttp(userPath.username, {
@@ -238,12 +238,12 @@ validateHttp(userPath.username, {
 });
 ```
 
-## Conditional Validators with `applyWhen`
+## Bedingte Validatoren mit `applyWhen`
 
-Apply validation rules only when a condition is met. The condition is reactive — validators are added/removed automatically.
+Validierungsregeln nur anwenden, wenn eine Bedingung erfüllt ist. Die Bedingung ist reaktiv — Validatoren werden automatisch hinzugefügt/entfernt.
 
 ```typescript
-// Require email only when "email" is selected as primary contact
+// Email nur erforderlich, wenn "email" als primärer Kontakt ausgewählt ist
 applyWhen(
   profileForm.email,
   ({ valueOf }) => valueOf(profileForm.primaryContact) === "email",
@@ -252,7 +252,7 @@ applyWhen(
   },
 );
 
-// Require phone only when "phone" is selected
+// Telefon nur erforderlich, wenn "phone" ausgewählt ist
 applyWhen(
   profileForm.phone,
   ({ valueOf }) => valueOf(profileForm.primaryContact) === "phone",
@@ -262,14 +262,14 @@ applyWhen(
 );
 ```
 
-### Conditionally Shown & Validated Sections with `hidden` + `applyWhen`
+### Bedingt angezeigte & validierte Sektionen mit `hidden` + `applyWhen`
 
-Combine `hidden` and `applyWhen` to conditionally show and validate entire form sections. The `addressSchema` is reused for both the main address and the delivery address:
+`hidden` und `applyWhen` kombinieren, um ganze Formularbereiche bedingt anzuzeigen und zu validieren. Das `addressSchema` wird sowohl für die Hauptadresse als auch für die Lieferadresse wiederverwendet:
 
 ```typescript
 // schemas/form.schemas.ts
 export const formSchema = schema<IForm>((rootPath) => {
-  apply(rootPath.address, addressSchema);       // always validated
+  apply(rootPath.address, addressSchema);       // wird immer validiert
   // ...
   hidden(
     rootPath.deliveryAddress,
@@ -278,7 +278,7 @@ export const formSchema = schema<IForm>((rootPath) => {
   applyWhen(
     rootPath.deliveryAddress,
     (logic) => logic.valueOf(rootPath.deviatingDeliveryAddress),
-    addressSchema,                               // same schema, reused
+    addressSchema,                               // gleiches Schema, wiederverwendet
   );
 });
 ```
@@ -295,9 +295,9 @@ export const formSchema = schema<IForm>((rootPath) => {
 }
 ```
 
-## Reusable Error Messages
+## Wiederverwendbare Fehlermeldungen
 
-A single `ErrorMessage` component handles all field errors. It takes a `FieldState` input and displays errors when the field is touched and invalid.
+Eine einzelne `ErrorMessage`-Komponente behandelt alle Feldfehler. Sie nimmt einen `FieldState`-Input entgegen und zeigt Fehler an, wenn das Feld berührt und ungültig ist.
 
 ```typescript
 @Component({ selector: "app-error-message" })
@@ -315,13 +315,13 @@ export class ErrorMessage {
 }
 ```
 
-Usage — pass the field state (note the `()` call to unwrap the signal):
+Verwendung — den FieldState übergeben (beachte den `()`-Aufruf zum Unwrappen des Signals):
 
 ```html
 <input [formField]="form().firstName" />
 <app-error-message [inputForm]="form().firstName()" />
 ```
 
-## Semantic HTML Attributes
+## Semantische HTML-Attribute
 
-Signal forms automatically add semantically correct `required` and `disabled` attributes to bound input elements based on the schema. No manual `[attr.required]` or `[attr.disabled]` bindings needed — if a field has a `required` validator, the HTML attribute is set automatically.
+Signal Forms fügen automatisch semantisch korrekte `required`- und `disabled`-Attribute an gebundene Input-Elemente hinzu, basierend auf dem Schema. Kein manuelles `[attr.required]` oder `[attr.disabled]` nötig — hat ein Feld einen `required`-Validator, wird das HTML-Attribut automatisch gesetzt.

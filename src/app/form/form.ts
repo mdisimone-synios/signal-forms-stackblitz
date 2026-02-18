@@ -15,7 +15,7 @@ import { User } from "../user/user";
   styleUrl: "./form.scss",
 })
 export class Form {
-  formModel = signal<IForm>(this.initializeCustomerModel());
+  formModel = signal<IForm>(this.initialModel());
 
   form = form(this.formModel, formSchema);
 
@@ -25,7 +25,7 @@ export class Form {
     });
   }
 
-  initializeCustomerModel() {
+  initialModel() {
     return {
       user: {
         username: "",
