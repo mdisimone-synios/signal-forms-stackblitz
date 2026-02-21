@@ -4,6 +4,39 @@ A practical reference for `@angular/forms/signals` based on this project's imple
 
 [Edit in StackBlitz next generation editor](https://stackblitz.com/~/github.com/MarcelloDiSimone/signal-forms-stackblitz)
 
+## Global Configuration with `provideSignalFormsConfig`
+
+Use `provideSignalFormsConfig` in `appConfig` to define custom CSS class names that are automatically added to input elements based on their current state. Each entry maps a class name to a predicate function that receives the field's signal state.
+
+```typescript
+// main.ts
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideSignalFormsConfig({
+      classes: {
+        "is-touched":   (s) => s.state().touched(),
+        "is-untouched": (s) => !s.state().touched(),
+        "is-dirty":     (s) => s.state().dirty(),
+        "is-pristine":  (s) => !s.state().dirty(),
+        "is-valid":     (s) => s.state().touched() && s.state().valid(),
+        "is-invalid":   (s) => s.state().touched() && s.state().invalid(),
+        "is-pending":   (s) => s.state().pending(),
+      },
+    }),
+  ],
+};
+```
+
+The class names are fully customizable — use any convention that fits your CSS framework (e.g. Bootstrap's `is-valid` / `is-invalid`, or your own utility classes). The predicates are reactive and re-evaluated whenever the field state changes.
+
+If you prefer the standard Angular state classes (`ng-valid`, `ng-invalid`, `ng-touched`, etc.), pass the built-in `NG_STATUS_CLASSES` constant instead:
+
+```typescript
+import { NG_STATUS_CLASSES, provideSignalFormsConfig } from "@angular/forms/signals";
+
+provideSignalFormsConfig({ classes: NG_STATUS_CLASSES })
+```
+
 ## Form Setup
 
 Define a typed model, provide default values via a signal, and attach a schema for validation.

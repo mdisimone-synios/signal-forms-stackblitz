@@ -4,6 +4,39 @@ Eine praxisnahe Referenz zu `@angular/forms/signals` basierend auf der Implement
 
 [Im StackBlitz Editor bearbeiten](https://stackblitz.com/~/github.com/MarcelloDiSimone/signal-forms-stackblitz)
 
+## Globale Konfiguration mit `provideSignalFormsConfig`
+
+Mit `provideSignalFormsConfig` in der `appConfig` lassen sich benutzerdefinierte CSS-Klassennamen definieren, die automatisch auf Input-Elemente angewendet werden – abhängig von deren aktuellem Zustand. Jeder Eintrag ordnet einem Klassennamen eine Prädikatfunktion zu, die den Signal-State des Felds empfängt.
+
+```typescript
+// main.ts
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideSignalFormsConfig({
+      classes: {
+        "is-touched":   (s) => s.state().touched(),
+        "is-untouched": (s) => !s.state().touched(),
+        "is-dirty":     (s) => s.state().dirty(),
+        "is-pristine":  (s) => !s.state().dirty(),
+        "is-valid":     (s) => s.state().touched() && s.state().valid(),
+        "is-invalid":   (s) => s.state().touched() && s.state().invalid(),
+        "is-pending":   (s) => s.state().pending(),
+      },
+    }),
+  ],
+};
+```
+
+Die Klassennamen sind frei wählbar — verwende jede Konvention, die zum eigenen CSS-Framework passt (z. B. Bootstraps `is-valid` / `is-invalid` oder eigene Utility-Klassen). Die Prädikate sind reaktiv und werden bei jeder Änderung des Feldzustands neu ausgewertet.
+
+Wer stattdessen die Standard-Angular-Statusklassen (`ng-valid`, `ng-invalid`, `ng-touched` usw.) bevorzugt, übergibt einfach die eingebaute Konstante `NG_STATUS_CLASSES`:
+
+```typescript
+import { NG_STATUS_CLASSES, provideSignalFormsConfig } from "@angular/forms/signals";
+
+provideSignalFormsConfig({ classes: NG_STATUS_CLASSES })
+```
+
 ## Formular-Setup
 
 Typisiertes Model definieren, Standardwerte per Signal bereitstellen und ein Schema zur Validierung anheften.
