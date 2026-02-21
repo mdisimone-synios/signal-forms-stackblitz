@@ -1,16 +1,14 @@
-import {
-  Component,
-  input,
-  ViewEncapsulation,
-  ChangeDetectionStrategy,
-} from '@angular/core';
-import { FieldState } from '@angular/forms/signals';
+import { Component, input } from "@angular/core";
+import { FieldState } from "@angular/forms/signals";
 
 @Component({
-  selector: 'app-error-message',
+  selector: "app-error-message",
   imports: [],
-  templateUrl: './error-message.html',
-  styleUrl: './error-message.scss',
+  templateUrl: "./error-message.html",
+  styleUrl: "./error-message.scss",
+  host: {
+    class: "invalid-feedback",
+  },
 })
 export class ErrorMessage {
   inputForm = input.required<FieldState<any, any>>();
